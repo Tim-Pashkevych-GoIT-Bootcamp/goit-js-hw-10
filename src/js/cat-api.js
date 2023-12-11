@@ -1,7 +1,7 @@
 import axios from 'axios';
 import 'dotenv/config';
 
-const URL = 'https://api.thecatapi.com';
+const BASE_URL = 'https://api.thecatapi.com';
 
 // Add our API key to every requeset
 axios.defaults.headers.common['x-api-key'] = process.env.CAT_API_KEY;
@@ -10,7 +10,7 @@ axios.defaults.headers.common['x-api-key'] = process.env.CAT_API_KEY;
 export const fetchBreeds = () => {
   const END_POINT = '/v1/breeds';
 
-  return axios.get(`${URL}${END_POINT}`).then(respose => {
+  return axios.get(`${BASE_URL}${END_POINT}`).then(respose => {
     return respose.data.map(({ id, name }) => ({ id, name }));
   });
 };
@@ -22,7 +22,7 @@ export const fetchCatByBreed = breedId => {
     breed_ids: breedId,
   });
 
-  return axios.get(`${URL}${END_POINT}?${SERCH_PARAMS}`).then(respose => {
+  return axios.get(`${BASE_URL}${END_POINT}?${SERCH_PARAMS}`).then(respose => {
     const data = respose.data.shift();
     const { height, width, url } = data;
     const { name, description, temperament } = data.breeds.shift();

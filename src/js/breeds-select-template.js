@@ -1,5 +1,5 @@
-export const breedsSelectTemplate = cats => {
-  return cats
-    .map(cat => `<option value='${cat.id}'>${cat.name}</option>`)
-    .join('');
-};
+const breedsSelectTemplate = cat =>
+  `<option value='${cat.id}'>${cat.name}</option>`;
+
+export const renderBreedsSelect = cats =>
+  cats.map(breedsSelectTemplate).join('');

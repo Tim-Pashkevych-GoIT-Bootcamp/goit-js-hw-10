@@ -4,8 +4,8 @@ import 'slim-select/dist/slimselect.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
-import { breedsSelectTemplate } from './breeds-select-template.js';
-import { catInfoTemplate } from './cat-info-template.js';
+import { renderBreedsSelect } from './breeds-select-template.js';
+import { renderCatInfo } from './cat-info-template.js';
 
 const refs = {
   breedSelect: document.querySelector('.breed-select'),
@@ -46,18 +46,14 @@ showLoader();
 // Fetch Breeds
 fetchBreeds()
   .then(cats => {
-    updateContent(refs.breedSelect, breedsSelectTemplate(cats));
+    updateContent(refs.breedSelect, renderBreedsSelect(cats));
 
     new SlimSelect({
       select: '#breed-select-id',
     });
   })
-  .catch(() => {
-    showError();
-  })
-  .finally(() => {
-    hideLoader();
-  });
+  .catch(showError)
+  .finally(hideLoader);
 
 // Add Event listener
 refs.breedSelect.addEventListener('change', onSelectBreed);
@@ -75,12 +71,8 @@ function onSelectBreed(event) {
   // Fetch the data
   fetchCatByBreed(event.target.value)
     .then(cat => {
-      updateContent(refs.catInfoElement, catInfoTemplate(cat));
+      updateContent(refs.catInfoElement, renderCatInfo(cat));
     })
-    .catch(() => {
-      showError();
-    })
-    .finally(() => {
-      hideLoader();
-    });
+    .catch(showError)
+    .finally(hideLoader);
 }
